@@ -1,0 +1,178 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  background: $color-bg-page;
+  min-height: 100vh;
+}
+
+.tabRow {
+  padding: $spacing-md 0 $spacing-sm;
+}
+
+.contentBody {
+  padding: 0 $page-padding;
+}
+
+.sectionHeader {
+  margin-bottom: $spacing-lg;
+}
+
+.sectionTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.sectionDesc {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.circleGrid {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.circleCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.circleCardBody {
+  padding: $spacing-lg;
+}
+
+.circleName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.circleDesc {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-md;
+}
+
+.circleMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.circleMembers {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.joinBtn {
+  background: $color-primary;
+  padding: 8rpx 28rpx;
+  border-radius: $radius-button;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.joinBtnText {
+  font-size: 22rpx;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.postList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.postCard {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md $spacing-lg;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.postInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.postTypeTag {
+  font-size: 18rpx;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-sm;
+  margin-right: $spacing-sm;
+  font-weight: $font-weight-medium;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.typeRent {
+  background: rgba($color-primary, 0.1);
+  color: $color-primary;
+}
+
+.typeExchange {
+  background: rgba($color-secondary, 0.1);
+  color: $color-secondary;
+}
+
+.typeHelp {
+  background: rgba($color-warning, 0.1);
+  color: $color-warning;
+}
+
+.postTitle {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.postMeta {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.postUser {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.postTime {
+  font-size: 20rpx;
+  color: $color-text-disabled;
+}
+
+.emptySpace {
+  @include flex-center;
+  padding: 80rpx 0;
+}
+
+.devTip {
+  font-size: $font-size-xs;
+  color: $color-text-disabled;
+}
+
+.bottomSpace {
+  height: 40rpx;
+}

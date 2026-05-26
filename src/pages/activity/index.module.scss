@@ -1,0 +1,183 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  background: $color-bg-page;
+  min-height: 100vh;
+}
+
+.filterRow {
+  padding: $spacing-md 0 $spacing-sm;
+}
+
+.listSection {
+  padding: 0 $page-padding;
+}
+
+.activityCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.activityImage {
+  width: 100%;
+  height: 300rpx;
+  position: relative;
+}
+
+.typeBadge {
+  position: absolute;
+  top: $spacing-sm;
+  left: $spacing-sm;
+  padding: 6rpx 20rpx;
+  border-radius: $radius-sm;
+  z-index: 1;
+}
+
+.badgeCommunity {
+  background: rgba($color-primary, 0.85);
+}
+
+.badgeMerchant {
+  background: rgba($color-secondary, 0.85);
+}
+
+.badgePersonal {
+  background: rgba($color-warning, 0.85);
+}
+
+.badgeText {
+  font-size: 20rpx;
+  color: #fff;
+  font-weight: $font-weight-medium;
+}
+
+.feeBadge {
+  position: absolute;
+  top: $spacing-sm;
+  right: $spacing-sm;
+  padding: 6rpx 16rpx;
+  border-radius: $radius-sm;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.feeText {
+  font-size: 20rpx;
+  color: #fff;
+}
+
+.activityBody {
+  padding: $spacing-lg;
+}
+
+.actTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+  @include text-ellipsis;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: $spacing-sm;
+}
+
+.metaItem {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  white-space: nowrap;
+}
+
+.metaLocation {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.actDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis-multi(2);
+  margin-bottom: $spacing-md;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.organizer {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  @include text-ellipsis;
+  flex: 1;
+  margin-right: $spacing-sm;
+}
+
+.participants {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  flex-shrink: 0;
+}
+
+.participantCount {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+}
+
+.participantMax {
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+}
+
+.participantBar {
+  width: 120rpx;
+  height: 8rpx;
+  background: $color-divider;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.participantFill {
+  height: 100%;
+  background: $color-primary;
+  border-radius: $radius-round;
+  transition: width 0.5s ease;
+}
+
+.emptyTip {
+  @include flex-center;
+  padding: 160rpx 0;
+  flex-direction: column;
+}
+
+.emptyEmoji {
+  font-size: 64rpx;
+  margin-bottom: $spacing-md;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-disabled;
+}
+
+.bottomSpace {
+  height: 40rpx;
+}

@@ -1,0 +1,123 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.title {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+  display: block;
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 260rpx;
+  padding-bottom: 40rpx;
+}
+
+.barCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 40rpx;
+}
+
+.barValue {
+  font-size: 18rpx;
+  margin-bottom: 4rpx;
+  white-space: nowrap;
+}
+
+.labelHigh {
+  color: $color-occupancy-high;
+}
+
+.labelMedium {
+  color: $color-occupancy-medium;
+}
+
+.labelLow {
+  color: $color-occupancy-low;
+}
+
+.bar {
+  width: 32rpx;
+  border-radius: 6rpx 6rpx 0 0;
+  transition: height 0.4s ease;
+  min-height: 4rpx;
+}
+
+.barHigh {
+  background: linear-gradient(180deg, $color-occupancy-high, $color-occupancy-medium);
+}
+
+.barMedium {
+  background: linear-gradient(180deg, $color-occupancy-medium, $color-occupancy-low);
+}
+
+.barLow {
+  background: $color-occupancy-low;
+}
+
+.barCurrent {
+  border: 3rpx solid $color-primary;
+}
+
+.barHour {
+  font-size: 18rpx;
+  color: $color-text-tertiary;
+  margin-top: 6rpx;
+  white-space: nowrap;
+}
+
+.barHourCurrent {
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-lg;
+  margin-top: $spacing-sm;
+  padding-top: $spacing-sm;
+  border-top: 1rpx solid $color-divider;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+}
+
+.legendDot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 4rpx;
+  margin-right: 8rpx;
+}
+
+.legendLow {
+  background: $color-occupancy-low;
+}
+
+.legendMedium {
+  background: $color-occupancy-medium;
+}
+
+.legendHigh {
+  background: $color-occupancy-high;
+}
+
+.legendText {
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+}

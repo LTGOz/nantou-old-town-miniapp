@@ -1,0 +1,168 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  background: $color-bg-page;
+  min-height: 100vh;
+}
+
+.loading {
+  @include flex-center;
+  padding: 200rpx 0;
+}
+
+.cover {
+  width: 100%;
+  height: 400rpx;
+}
+
+.body {
+  padding: $spacing-lg;
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.typeBadge {
+  font-size: 22rpx;
+  padding: 6rpx 20rpx;
+  border-radius: $radius-sm;
+  color: #fff;
+  font-weight: $font-weight-medium;
+}
+
+.badgeCommunity {
+  background: $color-primary;
+}
+
+.badgeMerchant {
+  background: $color-secondary;
+}
+
+.badgePersonal {
+  background: $color-warning;
+}
+
+.feeLabel {
+  font-size: 24rpx;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+}
+
+.title {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-lg;
+  line-height: 1.4;
+}
+
+.infoCard {
+  background: $color-bg-warm;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.infoLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  width: 140rpx;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  flex: 1;
+}
+
+.progressSection {
+  margin-bottom: $spacing-xl;
+}
+
+.progressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.progressLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.progressCount {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+}
+
+.progressBar {
+  width: 100%;
+  height: 12rpx;
+  background: $color-divider;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, $color-primary-light, $color-primary);
+  border-radius: $radius-round;
+  transition: width 0.5s ease;
+}
+
+.descSection {
+  margin-bottom: $spacing-xl;
+}
+
+.descTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-sm;
+}
+
+.desc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+}
+
+.bottomAction {
+  padding: $spacing-md 0 48rpx;
+}
+
+.signUpBtn {
+  width: 100%;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+  @include flex-center;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.signUpText {
+  font-size: $font-size-lg;
+  color: #fff;
+  font-weight: $font-weight-semibold;
+}

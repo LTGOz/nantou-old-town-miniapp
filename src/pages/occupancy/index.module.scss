@@ -1,0 +1,300 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: $color-bg-page;
+}
+
+.statsBar {
+  display: flex;
+  justify-content: space-around;
+  padding: $spacing-md $page-padding;
+  background: $color-bg-card;
+  box-shadow: $shadow-float;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.statDot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: $radius-round;
+}
+
+.dotLow {
+  background: $color-occupancy-low;
+}
+
+.dotMedium {
+  background: $color-occupancy-medium;
+}
+
+.dotHigh {
+  background: $color-occupancy-high;
+}
+
+.statLabel {
+  font-size: 22rpx;
+  color: $color-text-tertiary;
+}
+
+.statValue {
+  font-size: 26rpx;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  min-width: 28rpx;
+  text-align: center;
+}
+
+.filterSection {
+  padding: $spacing-md 0 $spacing-sm;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.merchantList {
+  flex: 1;
+  padding: 0 $page-padding;
+  max-height: 50%;
+}
+
+.merchantRow {
+  display: flex;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-sm;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.merchantRowSelected {
+  border: 2rpx solid $color-primary;
+  background: $color-bg-warm;
+}
+
+.merchantInfo {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+.merchantImage {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: $radius-sm;
+  flex-shrink: 0;
+  margin-right: $spacing-md;
+}
+
+.merchantDetail {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.merchantName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  margin-bottom: 6rpx;
+}
+
+.merchantTags {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 6rpx;
+}
+
+.merchantCategory {
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+  background: $color-bg-hover;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-sm;
+  white-space: nowrap;
+}
+
+.levelTag {
+  font-size: 18rpx;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-sm;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+}
+
+.levelLow {
+  background: rgba($color-occupancy-low, 0.1);
+  color: $color-occupancy-low;
+}
+
+.levelMedium {
+  background: rgba($color-occupancy-medium, 0.1);
+  color: $color-occupancy-medium;
+}
+
+.levelHigh {
+  background: rgba($color-occupancy-high, 0.1);
+  color: $color-occupancy-high;
+}
+
+.merchantSeats {
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+}
+
+.occupancyBar {
+  width: 180rpx;
+  flex-shrink: 0;
+  margin-left: $spacing-sm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.trendIndicator {
+  margin-top: 4rpx;
+}
+
+.updateTime {
+  font-size: 18rpx;
+  color: $color-text-disabled;
+  white-space: nowrap;
+}
+
+.emptyTip {
+  @include flex-center;
+  padding: 120rpx 0;
+}
+
+.emptyText {
+  font-size: $font-size-sm;
+  color: $color-text-disabled;
+}
+
+.bottomPanel {
+  background: $color-bg-card;
+  border-radius: $radius-xl $radius-xl 0 0;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
+  max-height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.panelHeader {
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.panelTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panelTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+  margin-right: $spacing-sm;
+}
+
+.panelActions {
+  display: flex;
+  gap: $spacing-sm;
+  flex-shrink: 0;
+}
+
+.detailBtn {
+  padding: 10rpx 24rpx;
+  border-radius: $radius-button;
+  border: 2rpx solid $color-border;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.detailBtnText {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.navBtn {
+  padding: 10rpx 24rpx;
+  border-radius: $radius-button;
+  background: $color-primary;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.navBtnText {
+  font-size: $font-size-xs;
+  color: #fff;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+}
+
+.panelBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-md $spacing-lg;
+}
+
+.panelOccupancy {
+  display: flex;
+  align-items: center;
+  background: $color-bg-warm;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.panelPercent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140rpx;
+  flex-shrink: 0;
+}
+
+.percentNum {
+  font-size: 48rpx;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.percentLabel {
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.panelBar {
+  flex: 1;
+  margin-left: $spacing-md;
+}
