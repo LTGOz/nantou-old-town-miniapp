@@ -3,6 +3,7 @@ import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro, { useRouter } from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { getActivityById } from '@/services/activity';
 import { Activity } from '@/types';
 
@@ -28,9 +29,7 @@ const ActivityDetailPage: React.FC = () => {
   if (!activity) {
     return (
       <View className={styles.page}>
-        <View className={styles.loading}>
-          <Text>加载中...</Text>
-        </View>
+        <LoadingSpinner text="加载活动详情" />
       </View>
     );
   }

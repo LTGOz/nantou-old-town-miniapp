@@ -1,26 +1,26 @@
 @use '@/styles/variables.scss' as *;
 
 .container {
-  background: $color-bg-card;
-  border-radius: $radius-lg;
+  @include card-elevated;
+  border-radius: $radius-md;
   padding: $spacing-lg;
-  box-shadow: $shadow-card;
 }
 
 .title {
   font-size: $font-size-md;
   font-weight: $font-weight-semibold;
   color: $color-text-primary;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-lg;
   display: block;
+  letter-spacing: 0.5rpx;
 }
 
 .chart {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  height: 260rpx;
-  padding-bottom: 40rpx;
+  height: 240rpx;
+  padding-bottom: 36rpx;
 }
 
 .barCol {
@@ -28,48 +28,33 @@
   flex-direction: column;
   align-items: center;
   flex: 1;
-  min-width: 40rpx;
+  min-width: 36rpx;
 }
 
 .barValue {
   font-size: 18rpx;
   margin-bottom: 4rpx;
   white-space: nowrap;
+  letter-spacing: 0.5rpx;
 }
 
-.labelHigh {
-  color: $color-occupancy-high;
-}
-
-.labelMedium {
-  color: $color-occupancy-medium;
-}
-
-.labelLow {
-  color: $color-occupancy-low;
-}
+.labelHigh { color: $color-occupancy-high; }
+.labelMedium { color: $color-occupancy-medium; }
+.labelLow { color: $color-occupancy-low; }
 
 .bar {
-  width: 32rpx;
-  border-radius: 6rpx 6rpx 0 0;
+  width: 24rpx;
+  border-radius: 3rpx 3rpx 0 0;
   transition: height 0.4s ease;
   min-height: 4rpx;
 }
 
-.barHigh {
-  background: linear-gradient(180deg, $color-occupancy-high, $color-occupancy-medium);
-}
-
-.barMedium {
-  background: linear-gradient(180deg, $color-occupancy-medium, $color-occupancy-low);
-}
-
-.barLow {
-  background: $color-occupancy-low;
-}
+.barHigh { background: $color-occupancy-high; }
+.barMedium { background: $color-occupancy-medium; }
+.barLow { background: $color-occupancy-low; }
 
 .barCurrent {
-  border: 3rpx solid $color-primary;
+  border: 2rpx solid $color-primary-dark;
 }
 
 .barHour {
@@ -80,7 +65,7 @@
 }
 
 .barHourCurrent {
-  color: $color-primary;
+  color: $color-primary-dark;
   font-weight: $font-weight-semibold;
 }
 
@@ -88,9 +73,9 @@
   display: flex;
   justify-content: center;
   gap: $spacing-lg;
-  margin-top: $spacing-sm;
-  padding-top: $spacing-sm;
-  border-top: 1rpx solid $color-divider;
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  @include hairline(rgba($color-divider, 0.8));
 }
 
 .legendItem {
@@ -99,25 +84,18 @@
 }
 
 .legendDot {
-  width: 16rpx;
-  height: 16rpx;
-  border-radius: 4rpx;
-  margin-right: 8rpx;
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 2rpx;
+  margin-right: 6rpx;
 }
 
-.legendLow {
-  background: $color-occupancy-low;
-}
-
-.legendMedium {
-  background: $color-occupancy-medium;
-}
-
-.legendHigh {
-  background: $color-occupancy-high;
-}
+.legendLow { background: $color-occupancy-low; }
+.legendMedium { background: $color-occupancy-medium; }
+.legendHigh { background: $color-occupancy-high; }
 
 .legendText {
   font-size: 20rpx;
   color: $color-text-tertiary;
+  letter-spacing: 0.5rpx;
 }

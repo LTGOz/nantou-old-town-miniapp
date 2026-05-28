@@ -15,27 +15,21 @@ interface FilterTabsProps {
   onChange: (key: string) => void;
 }
 
-const FilterTabs: React.FC<FilterTabsProps> = ({ tabs, activeKey, onChange }) => {
-  return (
-    <ScrollView className={styles.container} scrollX>
-      {tabs.map((tab) => (
-        <View
-          key={tab.key}
-          className={classnames(styles.tab, activeKey === tab.key && styles.active)}
-          onClick={() => onChange(tab.key)}
-        >
-          <Text className={classnames(styles.tabLabel, activeKey === tab.key && styles.activeLabel)}>
-            {tab.label}
+const FilterTabs: React.FC<FilterTabsProps> = ({ tabs, activeKey, onChange }) => (
+  <ScrollView className={styles.container} scrollX>
+    {tabs.map((tab) => (
+      <View key={tab.key} className={classnames(styles.tab, activeKey === tab.key && styles.active)} onClick={() => onChange(tab.key)}>
+        <Text className={classnames(styles.tabLabel, activeKey === tab.key && styles.activeLabel)}>
+          {tab.label}
+        </Text>
+        {tab.count !== undefined && (
+          <Text className={classnames(styles.tabCount, activeKey === tab.key && styles.activeCount)}>
+            {tab.count}
           </Text>
-          {tab.count !== undefined && (
-            <Text className={classnames(styles.tabCount, activeKey === tab.key && styles.activeCount)}>
-              {tab.count}
-            </Text>
-          )}
-        </View>
-      ))}
-    </ScrollView>
-  );
-};
+        )}
+      </View>
+    ))}
+  </ScrollView>
+);
 
 export default FilterTabs;

@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro, { usePullDownRefresh } from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
 import FilterTabs from '@/components/FilterTabs';
 import OccupancyBar from '@/components/OccupancyBar';
-import TrendChart from '@/components/TrendChart';
 import { merchants } from '@/data/merchants';
 import { occupancyData } from '@/data/occupancy';
 import { Merchant, OccupancyRecord, OccupancyLevel } from '@/types';
@@ -24,193 +23,115 @@ const levelTabs = [
   { key: 'high', label: '较满' },
 ];
 
+const LEVEL_LABEL: Record<OccupancyLevel, string> = { high: '较满', medium: '适中', low: '空闲' };
+const LEVEL_STYLE: Record<OccupancyLevel, string> = { high: 'levelHigh', medium: 'levelMedium', low: 'levelLow' };
+
+const levelFromRate = (rate: number): OccupancyLevel => {
+  if (rate >= 70) return 'high';
+  if (rate >= 40) return 'medium';
+  return 'low';
+};
+
 const OccupancyPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeLevel, setActiveLevel] = useState('all');
-  const [selectedMerchantId, setSelectedMerchantId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (selectedMerchantId === null && filteredMerchants.length > 0) {
-      setSelectedMerchantId(filteredMerchants[0].id);
-    }
-  }, []);
+  usePullDownRefresh(() => Taro.stopPullDownRefresh());
 
-  usePullDownRefresh(() => {
-    setTimeout(() => Taro.stopPullDownRefresh(), 600);
-  });
-
-  const getOccupancyRecord = (merchantId: number): OccupancyRecord | undefined => {
-    return occupancyData.find((o) => o.merchantId === merchantId);
-  };
-
-  const getOccupancyLevel = (rate: number): OccupancyLevel => {
-    if (rate >= 70) return 'high';
-    if (rate >= 40) return 'medium';
-    return 'low';
-  };
-
-  const getLevelLabel = (level: OccupancyLevel): string => {
-    if (level === 'high') return '较满';
-    if (level === 'medium') return '适中';
-    return '空闲';
-  };
-
-  const getLevelStyle = (level: OccupancyLevel): string => {
-    if (level === 'high') return styles.levelHigh;
-    if (level === 'medium') return styles.levelMedium;
-    return styles.levelLow;
-  };
-
-  const filteredMerchants = useMemo(() => {
-    let list = merchants;
-    if (activeCategory !== 'all') {
-      list = list.filter((m) => m.category === activeCategory);
-    }
+  const filtered = useMemo(() => {
+    let list = [...merchants];
+    if (activeCategory !== 'all') list = list.filter((m) => m.category === activeCategory);
     if (activeLevel !== 'all') {
       list = list.filter((m) => {
-        const occ = getOccupancyRecord(m.id);
-        if (!occ) return false;
-        return getOccupancyLevel(occ.currentOccupancy) === activeLevel;
+        const occ = occupancyData.find((o) => o.merchantId === m.id);
+        return occ && levelFromRate(occ.currentOccupancy) === activeLevel;
       });
     }
     return list;
   }, [activeCategory, activeLevel]);
 
   const selectedMerchant = useMemo(() => {
-    return merchants.find((m) => m.id === selectedMerchantId) || null;
-  }, [selectedMerchantId]);
+    const id = selectedId ?? filtered[0]?.id ?? null;
+    return id ? merchants.find((m) => m.id === id) ?? null : null;
+  }, [selectedId, filtered]);
 
-  const selectedOccupancy = useMemo(() => {
-    if (!selectedMerchantId) return null;
-    return getOccupancyRecord(selectedMerchantId) || null;
-  }, [selectedMerchantId]);
+  const selectedOcc = useMemo(() => {
+    if (!selectedMerchant) return null;
+    return occupancyData.find((o) => o.merchantId === selectedMerchant.id) ?? null;
+  }, [selectedMerchant]);
 
-  const trendData = useMemo(() => {
-    if (!selectedMerchantId) return [];
-    const record = getOccupancyRecord(selectedMerchantId);
-    return record?.hourlyData || [];
-  }, [selectedMerchantId]);
-
-  const overallStats = useMemo(() => {
+  const stats = useMemo(() => {
     const total = occupancyData.length;
-    const highCount = occupancyData.filter((o) => o.currentOccupancy >= 70).length;
-    const mediumCount = occupancyData.filter((o) => o.currentOccupancy >= 40 && o.currentOccupancy < 70).length;
-    const lowCount = total - highCount - mediumCount;
-    return { total, highCount, mediumCount, lowCount };
+    const high = occupancyData.filter((o) => o.currentOccupancy >= 70).length;
+    const medium = occupancyData.filter((o) => o.currentOccupancy >= 40 && o.currentOccupancy < 70).length;
+    const low = total - high - medium;
+    return { total, high, medium, low };
   }, []);
-
-  const handleMerchantSelect = (id: number) => {
-    setSelectedMerchantId(id);
-  };
-
-  const handleNavigate = (merchant: Merchant) => {
-    Taro.openLocation({
-      latitude: merchant.latitude,
-      longitude: merchant.longitude,
-      name: merchant.name,
-      address: merchant.address,
-    });
-  };
 
   return (
     <View className={styles.page}>
       <View className={styles.statsBar}>
         <View className={styles.statItem}>
-          <Text className={styles.statLabel}>总商户</Text>
-          <Text className={styles.statValue}>{overallStats.total}</Text>
+          <Text className={styles.statLabel}>商户</Text>
+          <Text className={styles.statValue}>{stats.total}</Text>
         </View>
-        <View className={styles.statItem}>
-          <View className={classnames(styles.statDot, styles.dotLow)} />
-          <Text className={styles.statLabel}>空闲</Text>
-          <Text className={styles.statValue}>{overallStats.lowCount}</Text>
-        </View>
-        <View className={styles.statItem}>
-          <View className={classnames(styles.statDot, styles.dotMedium)} />
-          <Text className={styles.statLabel}>适中</Text>
-          <Text className={styles.statValue}>{overallStats.mediumCount}</Text>
-        </View>
-        <View className={styles.statItem}>
-          <View className={classnames(styles.statDot, styles.dotHigh)} />
-          <Text className={styles.statLabel}>较满</Text>
-          <Text className={styles.statValue}>{overallStats.highCount}</Text>
-        </View>
+        {(['low', 'medium', 'high'] as const).map((level) => (
+          <View key={level} className={styles.statItem}>
+            <View className={classnames(styles.statDot, styles[`dot${level.charAt(0).toUpperCase() + level.slice(1)}`])} />
+            <Text className={styles.statLabel}>{LEVEL_LABEL[level]}</Text>
+            <Text className={styles.statValue}>{stats[level]}</Text>
+          </View>
+        ))}
       </View>
 
       <View className={styles.filterSection}>
         <FilterTabs tabs={categoryTabs} activeKey={activeCategory} onChange={setActiveCategory} />
-        <View style={{ height: '8rpx' }} />
+        <View style={{ height: 8 }} />
         <FilterTabs tabs={levelTabs} activeKey={activeLevel} onChange={setActiveLevel} />
       </View>
 
       <View className={styles.mainContent}>
         <ScrollView className={styles.merchantList} scrollY>
-          {filteredMerchants.length > 0 ? (
-            filteredMerchants.map((merchant) => {
-              const occupancy = getOccupancyRecord(merchant.id);
-              const level = occupancy ? getOccupancyLevel(occupancy.currentOccupancy) : null;
-              const isSelected = selectedMerchantId === merchant.id;
+          {filtered.map((merchant) => {
+            const occ = occupancyData.find((o) => o.merchantId === merchant.id);
+            const level = occ ? levelFromRate(occ.currentOccupancy) : null;
+            const isSelected = (selectedId ?? filtered[0]?.id) === merchant.id;
 
-              return (
-                <View
-                  key={merchant.id}
-                  className={classnames(styles.merchantRow, isSelected && styles.merchantRowSelected)}
-                  onClick={() => handleMerchantSelect(merchant.id)}
-                >
-                  <View className={styles.merchantInfo}>
-                    <Image className={styles.merchantImage} src={merchant.image} mode="aspectFill" />
-                    <View className={styles.merchantDetail}>
-                      <Text className={styles.merchantName}>{merchant.name}</Text>
-                      <View className={styles.merchantTags}>
-                        <Text className={styles.merchantCategory}>{merchant.categoryLabel}</Text>
-                        {level && (
-                          <Text className={classnames(styles.levelTag, getLevelStyle(level))}>
-                            {getLevelLabel(level)}
-                          </Text>
-                        )}
-                      </View>
-                      <Text className={styles.merchantSeats}>
-                        空座 {occupancy ? occupancy.totalSeats - occupancy.occupiedSeats : 0}/{occupancy?.totalSeats || 0}
-                      </Text>
+            return (
+              <View key={merchant.id} className={classnames(styles.merchantRow, isSelected && styles.merchantRowSelected)} onClick={() => setSelectedId(merchant.id)}>
+                <View className={styles.merchantInfo}>
+                  <Image className={styles.merchantImage} src={merchant.image} mode="aspectFill" />
+                  <View className={styles.merchantDetail}>
+                    <Text className={styles.merchantName}>{merchant.name}</Text>
+                    <View className={styles.merchantTags}>
+                      <Text className={styles.merchantCategory}>{merchant.categoryLabel}</Text>
+                      {level && <Text className={classnames(styles.levelTag, styles[LEVEL_STYLE[level]])}>{LEVEL_LABEL[level]}</Text>}
                     </View>
+                    <Text className={styles.merchantSeats}>空座 {occ ? occ.totalSeats - occ.occupiedSeats : 0}/{occ?.totalSeats ?? 0}</Text>
                   </View>
-                  {occupancy && (
-                    <View className={styles.occupancyBar}>
-                      <OccupancyBar
-                        rate={occupancy.currentOccupancy}
-                        occupiedSeats={occupancy.occupiedSeats}
-                        totalSeats={occupancy.totalSeats}
-                        size="small"
-                      />
-                      <View className={styles.trendIndicator}>
-                        <Text className={styles.updateTime}>更新于 {occupancy.updateTime}</Text>
-                      </View>
-                    </View>
-                  )}
                 </View>
-              );
-            })
-          ) : (
-            <View className={styles.emptyTip}>
-              <Text className={styles.emptyText}>暂无匹配商户</Text>
-            </View>
-          )}
+                {occ && (
+                  <View className={styles.occupancyBar}>
+                    <OccupancyBar rate={occ.currentOccupancy} occupiedSeats={occ.occupiedSeats} totalSeats={occ.totalSeats} size="small" />
+                    <Text className={styles.updateTime}>更新于 {occ.updateTime}</Text>
+                  </View>
+                )}
+              </View>
+            );
+          })}
         </ScrollView>
 
-        {selectedMerchant && selectedOccupancy && (
+        {selectedMerchant && selectedOcc && (
           <View className={styles.bottomPanel}>
             <View className={styles.panelHeader}>
               <View className={styles.panelTitleRow}>
                 <Text className={styles.panelTitle}>{selectedMerchant.name}</Text>
                 <View className={styles.panelActions}>
-                  <View className={styles.detailBtn}>
-                    <Text
-                      className={styles.detailBtnText}
-                      onClick={() => Taro.navigateTo({ url: `/pages/merchant-detail/index?id=${selectedMerchant.id}` })}
-                    >
-                      详情
-                    </Text>
+                  <View className={styles.detailBtn} onClick={() => Taro.navigateTo({ url: `/pages/merchant-detail/index?id=${selectedMerchant.id}` })}>
+                    <Text className={styles.detailBtnText}>详情</Text>
                   </View>
-                  <View className={styles.navBtn} onClick={() => handleNavigate(selectedMerchant)}>
+                  <View className={styles.navBtn} onClick={() => Taro.openLocation({ latitude: selectedMerchant.latitude, longitude: selectedMerchant.longitude, name: selectedMerchant.name, address: selectedMerchant.address })}>
                     <Text className={styles.navBtnText}>导航</Text>
                   </View>
                 </View>
@@ -219,19 +140,13 @@ const OccupancyPage: React.FC = () => {
             <View className={styles.panelBody}>
               <View className={styles.panelOccupancy}>
                 <View className={styles.panelPercent}>
-                  <Text className={styles.percentNum}>{selectedOccupancy.currentOccupancy}%</Text>
+                  <Text className={styles.percentNum}>{selectedOcc.currentOccupancy}%</Text>
                   <Text className={styles.percentLabel}>实时入座率</Text>
                 </View>
                 <View className={styles.panelBar}>
-                  <OccupancyBar
-                    rate={selectedOccupancy.currentOccupancy}
-                    occupiedSeats={selectedOccupancy.occupiedSeats}
-                    totalSeats={selectedOccupancy.totalSeats}
-                    size="large"
-                  />
+                  <OccupancyBar rate={selectedOcc.currentOccupancy} occupiedSeats={selectedOcc.occupiedSeats} totalSeats={selectedOcc.totalSeats} size="large" />
                 </View>
               </View>
-              <TrendChart data={trendData} currentRate={selectedOccupancy.currentOccupancy} />
             </View>
           </View>
         )}

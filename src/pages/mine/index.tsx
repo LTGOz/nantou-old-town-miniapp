@@ -38,8 +38,6 @@ const MinePage: React.FC = () => {
         </View>
       </View>
 
-      <View className={styles.divider} />
-
       <View className={styles.menuSection}>
         {otherMenus.map((item) => (
           <View key={item.label} className={styles.menuRow}>

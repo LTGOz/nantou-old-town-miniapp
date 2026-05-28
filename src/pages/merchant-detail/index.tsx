@@ -4,6 +4,7 @@ import Taro, { useRouter } from '@tarojs/taro';
 import styles from './index.module.scss';
 import OccupancyBar from '@/components/OccupancyBar';
 import TrendChart from '@/components/TrendChart';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { getMerchantById } from '@/services/merchant';
 import { getOccupancyByMerchant } from '@/services/occupancy';
 import { Merchant, OccupancyRecord } from '@/types';
@@ -27,9 +28,7 @@ const MerchantDetailPage: React.FC = () => {
   if (!merchant) {
     return (
       <View className={styles.page}>
-        <View className={styles.loading}>
-          <Text>加载中...</Text>
-        </View>
+        <LoadingSpinner text="加载商户信息" />
       </View>
     );
   }

@@ -20,6 +20,9 @@ const neighborPosts = [
   { id: 3, title: '猫砂一袋免费送', type: 'help', user: '阿杰', time: '2小时前' },
 ];
 
+const TYPE_LABEL: Record<string, string> = { rent: '转租', exchange: '交换', help: '互助' };
+const TYPE_CSS: Record<string, string> = { rent: 'typeRent', exchange: 'typeExchange', help: 'typeHelp' };
+
 const tabItems = [
   { key: 'circle', label: '兴趣社群' },
   { key: 'neighbor', label: '邻里互助' },
@@ -28,21 +31,7 @@ const tabItems = [
 const CirclePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('circle');
 
-  usePullDownRefresh(() => {
-    setTimeout(() => Taro.stopPullDownRefresh(), 600);
-  });
-
-  const getPostTypeLabel = (type: string): string => {
-    if (type === 'rent') return '转租';
-    if (type === 'exchange') return '交换';
-    return '互助';
-  };
-
-  const getPostTypeStyle = (type: string): string => {
-    if (type === 'rent') return styles.typeRent;
-    if (type === 'exchange') return styles.typeExchange;
-    return styles.typeHelp;
-  };
+  usePullDownRefresh(() => Taro.stopPullDownRefresh());
 
   return (
     <View className={styles.page}>
@@ -52,10 +41,8 @@ const CirclePage: React.FC = () => {
 
       {activeTab === 'circle' && (
         <View className={styles.contentBody}>
-          <View className={styles.sectionHeader}>
-            <Text className={styles.sectionTitle}>热门兴趣社群</Text>
-            <Text className={styles.sectionDesc}>以兴趣为纽带，遇见同频青年</Text>
-          </View>
+          <Text className={styles.sectionTitle}>热门兴趣社群</Text>
+          <Text className={styles.sectionDesc}>以兴趣为纽带，遇见同频青年</Text>
           <View className={styles.circleGrid}>
             {circleGroups.map((group) => (
               <View key={group.id} className={styles.circleCard}>
@@ -77,16 +64,14 @@ const CirclePage: React.FC = () => {
 
       {activeTab === 'neighbor' && (
         <View className={styles.contentBody}>
-          <View className={styles.sectionHeader}>
-            <Text className={styles.sectionTitle}>邻里互助</Text>
-            <Text className={styles.sectionDesc}>物品借用、合租转租、闲置交换</Text>
-          </View>
+          <Text className={styles.sectionTitle}>邻里互助</Text>
+          <Text className={styles.sectionDesc}>物品借用、合租转租、闲置交换</Text>
           <View className={styles.postList}>
             {neighborPosts.map((post) => (
               <View key={post.id} className={styles.postCard}>
                 <View className={styles.postInfo}>
-                  <Text className={classnames(styles.postTypeTag, getPostTypeStyle(post.type))}>
-                    {getPostTypeLabel(post.type)}
+                  <Text className={classnames(styles.postTypeTag, styles[TYPE_CSS[post.type] || 'typeHelp'])}>
+                    {TYPE_LABEL[post.type]}
                   </Text>
                   <Text className={styles.postTitle}>{post.title}</Text>
                 </View>
@@ -102,8 +87,6 @@ const CirclePage: React.FC = () => {
           </View>
         </View>
       )}
-
-      <View className={styles.bottomSpace} />
     </View>
   );
 };

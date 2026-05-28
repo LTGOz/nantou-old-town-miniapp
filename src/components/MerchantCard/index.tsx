@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import classnames from 'classnames';
+import Taro, { type ITouchEvent } from '@tarojs/taro';
 import styles from './index.module.scss';
 import OccupancyBar from '@/components/OccupancyBar';
 import { Merchant, OccupancyRecord } from '@/types';
@@ -9,26 +8,17 @@ import { Merchant, OccupancyRecord } from '@/types';
 interface MerchantCardProps {
   merchant: Merchant;
   occupancy?: OccupancyRecord;
-  showNavigate?: boolean;
 }
 
-const MerchantCard: React.FC<MerchantCardProps> = ({ merchant, occupancy, showNavigate = true }) => {
-  const handleNavigate = () => {
-    Taro.navigateTo({ url: `/pages/merchant-detail/index?id=${merchant.id}` });
-  };
-
-  const handleLocation = (e: any) => {
+const MerchantCard: React.FC<MerchantCardProps> = ({ merchant, occupancy }) => {
+  const toDetail = () => Taro.navigateTo({ url: `/pages/merchant-detail/index?id=${merchant.id}` });
+  const toLocation = (e: ITouchEvent) => {
     e.stopPropagation();
-    Taro.openLocation({
-      latitude: merchant.latitude,
-      longitude: merchant.longitude,
-      name: merchant.name,
-      address: merchant.address,
-    });
+    Taro.openLocation({ latitude: merchant.latitude, longitude: merchant.longitude, name: merchant.name, address: merchant.address });
   };
 
   return (
-    <View className={styles.card} onClick={handleNavigate}>
+    <View className={styles.card} onClick={toDetail}>
       <View className={styles.imageWrap}>
         <Image className={styles.image} src={merchant.image} mode="aspectFill" />
         <View className={styles.categoryTag}>
@@ -50,24 +40,17 @@ const MerchantCard: React.FC<MerchantCardProps> = ({ merchant, occupancy, showNa
         </View>
         {occupancy && (
           <View className={styles.occupancySection}>
-            <OccupancyBar
-              rate={occupancy.currentOccupancy}
-              occupiedSeats={occupancy.occupiedSeats}
-              totalSeats={occupancy.totalSeats}
-              size="small"
-            />
+            <OccupancyBar rate={occupancy.currentOccupancy} occupiedSeats={occupancy.occupiedSeats} totalSeats={occupancy.totalSeats} size="small" />
           </View>
         )}
-        {showNavigate && (
-          <View className={styles.actions}>
-            <View className={styles.navBtn} onClick={handleLocation}>
-              <Text className={styles.navBtnText}>📍 导航前往</Text>
-            </View>
-            <View className={styles.openTime}>
-              <Text className={styles.openTimeText}>{merchant.openTime}</Text>
-            </View>
+        <View className={styles.actions}>
+          <View className={styles.navBtn} onClick={toLocation}>
+            <Text className={styles.navBtnText}>📍 导航前往</Text>
           </View>
-        )}
+          <View className={styles.openTime}>
+            <Text className={styles.openTimeText}>{merchant.openTime}</Text>
+          </View>
+        </View>
       </View>
     </View>
   );

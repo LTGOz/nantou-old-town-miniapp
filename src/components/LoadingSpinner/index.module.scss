@@ -1,0 +1,82 @@
+@use '@/styles/variables.scss' as *;
+
+.wrapper {
+  @include flex-center;
+  padding: 200rpx 0;
+}
+
+.container {
+  position: relative;
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.block {
+  position: absolute;
+  width: 42rpx;
+  height: 42rpx;
+  border-radius: 3rpx;
+  border: 2rpx solid $color-primary-dark;
+  background: transparent;
+  opacity: 0.6;
+}
+
+.blockA {
+  top: 0;
+  left: 0;
+  animation: mortiseA 2s ease-in-out infinite;
+}
+
+.blockB {
+  top: 0;
+  right: 0;
+  animation: mortiseB 2s ease-in-out infinite;
+}
+
+.blockC {
+  bottom: 0;
+  left: 0;
+  animation: mortiseC 2s ease-in-out infinite;
+}
+
+.blockD {
+  bottom: 0;
+  right: 0;
+  animation: mortiseD 2s ease-in-out infinite;
+}
+
+@keyframes mortiseA {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(14rpx, 0); }
+  50% { transform: translate(14rpx, 14rpx); }
+  75% { transform: translate(0, 14rpx); }
+}
+
+@keyframes mortiseB {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(0, 14rpx); }
+  50% { transform: translate(-14rpx, 14rpx); }
+  75% { transform: translate(-14rpx, 0); }
+}
+
+@keyframes mortiseC {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(0, -14rpx); }
+  50% { transform: translate(14rpx, -14rpx); }
+  75% { transform: translate(14rpx, 0); }
+}
+
+@keyframes mortiseD {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-14rpx, 0); }
+  50% { transform: translate(-14rpx, -14rpx); }
+  75% { transform: translate(0, -14rpx); }
+}
+
+.text {
+  text-align: center;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: $spacing-md;
+  letter-spacing: 0.5rpx;
+}

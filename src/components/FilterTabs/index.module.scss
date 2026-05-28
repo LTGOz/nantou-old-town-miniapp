@@ -3,33 +3,27 @@
 .container {
   @include scroll-x-container;
   padding: 0 $page-padding;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-sm;
 }
 
 .tab {
   @include scroll-x-item(auto);
   display: inline-flex;
   align-items: center;
-  padding: $spacing-sm $spacing-lg;
+  padding: 10rpx $spacing-lg;
   background: $color-bg-card;
-  border-radius: $radius-button;
+  border-radius: $radius-sm;
   margin-right: $spacing-sm;
   transition: all $transition-base;
-
-  &:active {
-    opacity: 0.9;
-    transform: scale(0.97);
-  }
 }
 
 .active {
-  background: $color-primary;
+  background: $color-text-primary;
 }
 
 .tabLabel {
-  font-size: $font-size-sm;
+  font-size: $font-size-xs;
   color: $color-text-secondary;
-  white-space: nowrap;
 }
 
 .activeLabel {
@@ -38,16 +32,15 @@
 }
 
 .tabCount {
-  font-size: 20rpx;
+  font-size: 18rpx;
   color: $color-text-tertiary;
   margin-left: 8rpx;
   background: $color-bg-hover;
-  padding: 2rpx 12rpx;
+  padding: 2rpx 10rpx;
   border-radius: $radius-round;
-  white-space: nowrap;
 }
 
 .activeCount {
-  color: $color-text-white;
-  background: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.12);
 }

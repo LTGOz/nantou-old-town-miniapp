@@ -1,13 +1,7 @@
 @use '@/styles/variables.scss' as *;
 
 .page {
-  background: $color-bg-page;
   min-height: 100vh;
-}
-
-.loading {
-  @include flex-center;
-  padding: 200rpx 0;
 }
 
 .cover {
@@ -16,15 +10,14 @@
 }
 
 .body {
-  padding: $spacing-lg $spacing-lg 80rpx;
+  padding: $spacing-lg;
 }
 
 .name {
-  font-size: $font-size-xxl;
-  font-weight: $font-weight-bold;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
   color: $color-text-primary;
-  display: block;
-  margin-bottom: $spacing-sm;
+  margin-bottom: $spacing-md;
 }
 
 .basicInfo {
@@ -36,19 +29,15 @@
 
 .rating {
   font-size: $font-size-sm;
-  color: $color-primary;
+  color: $color-primary-dark;
   font-weight: $font-weight-semibold;
 }
 
 .divider {
-  color: $color-border;
+  color: $color-divider;
 }
 
-.category {
-  font-size: $font-size-xs;
-  color: $color-text-tertiary;
-}
-
+.category,
 .time {
   font-size: $font-size-xs;
   color: $color-text-tertiary;
@@ -57,20 +46,20 @@
 .address {
   font-size: $font-size-xs;
   color: $color-text-tertiary;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-lg;
 }
 
 .tags {
   display: flex;
   gap: 8rpx;
-  margin-bottom: $spacing-lg;
+  margin-bottom: $spacing-xl;
 }
 
 .tag {
   font-size: 20rpx;
-  color: $color-secondary;
-  background: rgba($color-secondary, 0.08);
-  padding: 6rpx 20rpx;
+  color: $color-text-tertiary;
+  background: $color-bg-hover;
+  padding: 5rpx 18rpx;
   border-radius: $radius-sm;
 }
 
@@ -86,13 +75,14 @@
   border-radius: $radius-lg;
   padding: $spacing-lg;
   margin-bottom: $spacing-xl;
+  box-shadow: $shadow-card;
 }
 
 .occHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-lg;
 }
 
 .occTitle {
@@ -109,7 +99,7 @@
 .occMain {
   display: flex;
   align-items: center;
-  margin-bottom: $spacing-lg;
+  margin-bottom: $spacing-xl;
 }
 
 .occPercent {
@@ -119,29 +109,27 @@
 
 .occNum {
   font-size: 52rpx;
-  font-weight: $font-weight-bold;
-  color: $color-primary;
+  font-weight: $font-weight-semibold;
+  color: $color-primary-dark;
 }
 
 .occBar {
   flex: 1;
-  margin-left: $spacing-md;
+  margin-left: $spacing-lg;
 }
 
 .navigateBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: $button-height-md;
   border-radius: $radius-button;
-  background: $color-primary;
-  @include flex-center;
-
-  &:active {
-    opacity: 0.9;
-  }
-}
-
-.navigateBtnText {
-  font-size: $font-size-lg;
-  color: #fff;
+  background: $color-primary-dark;
+  color: $color-text-white;
+  font-size: $font-size-md;
   font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  &:active { opacity: 0.88; }
 }

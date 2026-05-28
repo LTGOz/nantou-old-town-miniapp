@@ -27,69 +27,48 @@ const categoryNavs = [
   { key: 'personal', emoji: '🙋', label: '个人发起' },
 ];
 
+const TYPE_STYLE: Record<string, string> = {
+  community: 'tagCommunity',
+  merchant: 'tagMerchant',
+  personal: 'tagPersonal',
+};
+
 const HomePage: React.FC = () => {
   const [hotActivities, setHotActivities] = useState<Activity[]>([]);
   const [topMerchants, setTopMerchants] = useState<Merchant[]>([]);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  usePullDownRefresh(() => {
-    loadData();
-    setTimeout(() => {
-      Taro.stopPullDownRefresh();
-    }, 600);
-  });
 
   const loadData = () => {
     setHotActivities(activities.slice(0, 2));
     setTopMerchants([...merchants].sort((a, b) => b.rating - a.rating).slice(0, 4));
   };
 
-  const getTodayDate = (): string => {
-    const now = new Date();
-    const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-    return `${now.getMonth() + 1}月${now.getDate()}日 ${weekDays[now.getDay()]}`;
-  };
+  useEffect(loadData, []);
 
-  const getTypeStyle = (type: string): string => {
-    if (type === 'community') return styles.tagCommunity;
-    if (type === 'merchant') return styles.tagMerchant;
-    return styles.tagPersonal;
-  };
+  usePullDownRefresh(() => {
+    Taro.stopPullDownRefresh();
+  });
 
-  const handleQuickEntry = (key: string) => {
-    Taro.switchTab({
-      url: `/pages/occupancy/index?category=${key}`,
-    });
-  };
+  const now = new Date();
+  const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const date = `${now.getMonth() + 1}月${now.getDate()}日 ${weekDays[now.getDay()]}`;
 
-  const handleCategoryNav = (key: string) => {
-    Taro.switchTab({
-      url: `/pages/activity/index?type=${key}`,
-    });
-  };
-
-  const getOccupancyForMerchant = (merchantId: number) => {
-    return occupancyData.find((o) => o.merchantId === merchantId);
-  };
+  const toOccupancy = (key: string) => Taro.switchTab({ url: '/pages/occupancy/index' });
+  const toActivity = () => Taro.switchTab({ url: '/pages/activity/index' });
+  const toActivityDetail = (id: number) => Taro.navigateTo({ url: `/pages/activity-detail/index?id=${id}` });
+  const toMerchantDetail = (id: number) => Taro.navigateTo({ url: `/pages/merchant-detail/index?id=${id}` });
+  const toOccupancyPage = () => Taro.switchTab({ url: '/pages/occupancy/index' });
 
   return (
     <View className={styles.page}>
       <View className={styles.header}>
         <View className={styles.headerTop}>
           <Text className={styles.headerTitle}>南头古城</Text>
-          <Text className={styles.headerDate}>{getTodayDate()}</Text>
+          <Text className={styles.headerDate}>{date}</Text>
         </View>
         <Text className={styles.slogan}>兴趣相聚，轻社交，遇古城同频青年</Text>
         <View className={styles.quickEntry}>
           {quickEntries.map((entry) => (
-            <View
-              key={entry.key}
-              className={styles.entryCard}
-              onClick={() => handleQuickEntry(entry.key)}
-            >
+            <View key={entry.key} className={styles.entryCard} onClick={toOccupancy}>
               <Text className={styles.entryEmoji}>{entry.emoji}</Text>
               <Text className={styles.entryLabel}>{entry.label}入座率</Text>
             </View>
@@ -98,13 +77,7 @@ const HomePage: React.FC = () => {
       </View>
 
       <View className={styles.bannerSection}>
-        <Swiper
-          className={styles.bannerWrap}
-          indicatorDots
-          autoplay
-          interval={4000}
-          circular
-        >
+        <Swiper className={styles.bannerWrap} indicatorDots autoplay interval={4000} circular>
           {banners.map((banner) => (
             <SwiperItem key={banner.id}>
               <Image className={styles.bannerImage} src={banner.image} mode="aspectFill" />
@@ -117,17 +90,11 @@ const HomePage: React.FC = () => {
         </Swiper>
       </View>
 
-      <View className={styles.section} style={{ marginTop: '32rpx' }}>
-        <View className={styles.sectionHeader}>
-          <Text className={styles.sectionTitle}>活动分类</Text>
-        </View>
+      <View className={styles.section}>
+        <Text className={styles.sectionTitle}>活动分类</Text>
         <View className={styles.categoryNav}>
           {categoryNavs.map((cat) => (
-            <View
-              key={cat.key}
-              className={styles.catBtn}
-              onClick={() => handleCategoryNav(cat.key)}
-            >
+            <View key={cat.key} className={styles.catBtn} onClick={toActivity}>
               <Text className={styles.catEmoji}>{cat.emoji}</Text>
               <Text className={styles.catLabel}>{cat.label}</Text>
             </View>
@@ -138,20 +105,11 @@ const HomePage: React.FC = () => {
       <View className={styles.section}>
         <View className={styles.sectionHeader}>
           <Text className={styles.sectionTitle}>热门活动</Text>
-          <Text
-            className={styles.sectionMore}
-            onClick={() => Taro.switchTab({ url: '/pages/activity/index' })}
-          >
-            查看全部 ›
-          </Text>
+          <Text className={styles.sectionMore} onClick={toActivity}>查看全部 ›</Text>
         </View>
         <View className={styles.activityCards}>
           {hotActivities.map((act) => (
-            <View
-              key={act.id}
-              className={styles.activityCard}
-              onClick={() => Taro.navigateTo({ url: `/pages/activity-detail/index?id=${act.id}` })}
-            >
+            <View key={act.id} className={styles.activityCard} onClick={() => toActivityDetail(act.id)}>
               <Image className={styles.activityImage} src={act.image} mode="aspectFill" />
               <View className={styles.activityInfo}>
                 <Text className={styles.activityTitle}>{act.title}</Text>
@@ -163,7 +121,7 @@ const HomePage: React.FC = () => {
                   <Text>{act.location}</Text>
                 </View>
                 <View className={styles.activityFooter}>
-                  <Text className={classnames(styles.typeTag, getTypeStyle(act.type))}>
+                  <Text className={classnames(styles.typeTag, styles[TYPE_STYLE[act.type] || 'tagCommunity'])}>
                     {act.typeLabel}
                   </Text>
                   <Text className={styles.activityParticipants}>
@@ -179,34 +137,20 @@ const HomePage: React.FC = () => {
       <View className={styles.section}>
         <View className={styles.sectionHeader}>
           <Text className={styles.sectionTitle}>热门商户</Text>
-          <Text
-            className={styles.sectionMore}
-            onClick={() => Taro.switchTab({ url: '/pages/occupancy/index' })}
-          >
-            查看入座率 ›
-          </Text>
+          <Text className={styles.sectionMore} onClick={toOccupancyPage}>查看入座率 ›</Text>
         </View>
         <View className={styles.merchantGrid}>
           {topMerchants.map((merchant) => {
-            const occupancy = getOccupancyForMerchant(merchant.id);
+            const occupancy = occupancyData.find((o) => o.merchantId === merchant.id);
             return (
-              <View
-                key={merchant.id}
-                className={styles.merchantMini}
-                onClick={() => Taro.navigateTo({ url: `/pages/merchant-detail/index?id=${merchant.id}` })}
-              >
+              <View key={merchant.id} className={styles.merchantMini} onClick={() => toMerchantDetail(merchant.id)}>
                 <Image className={styles.merchantMiniImg} src={merchant.image} mode="aspectFill" />
                 <View className={styles.merchantMiniInfo}>
                   <Text className={styles.merchantMiniName}>{merchant.name}</Text>
                   <Text className={styles.merchantMiniDesc}>★ {merchant.rating}</Text>
                   {occupancy && (
                     <View className={styles.merchantMiniBar}>
-                      <OccupancyBar
-                        rate={occupancy.currentOccupancy}
-                        occupiedSeats={occupancy.occupiedSeats}
-                        totalSeats={occupancy.totalSeats}
-                        size="small"
-                      />
+                      <OccupancyBar rate={occupancy.currentOccupancy} occupiedSeats={occupancy.occupiedSeats} totalSeats={occupancy.totalSeats} size="small" />
                     </View>
                   )}
                 </View>
@@ -215,8 +159,6 @@ const HomePage: React.FC = () => {
           })}
         </View>
       </View>
-
-      <View className={styles.bottomSpace} />
     </View>
   );
 };
